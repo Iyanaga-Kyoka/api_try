@@ -3,6 +3,12 @@ const app = express();
 app.use(express.json());
 
 const users = {};
+users["TaroYamada"] = {
+  user_id: "TaroYamada",
+  password: "PaSSwd4TY",
+  nickname: "たろー",
+  comment: "僕は元気です",
+};
 
 const validate = (uid, pw) => {
   if (!uid || !pw) return "Required user_id and password";
@@ -62,7 +68,7 @@ app.patch("/users/:user_id", (req, res) => {
   const uid = auth(req);
   if (!uid) return res.status(401).json({ message: "Authentication failed" });
   if (uid !== req.params.user_id)
-    return res.status(403).json({ message: "No permission to update" });
+    return res.status(403).json({ message: "No permission for update" });
 
   const { nickname, comment } = req.body;
   if (nickname === undefined && comment === undefined) {
@@ -104,9 +110,7 @@ app.post("/close", (req, res) => {
   const uid = auth(req);
   if (!uid) return res.status(401).json({ message: "Authentication failed" });
   delete users[uid];
-  res
-    .status(200)
-    .json({ message: "Account and user details successfully removed" });
+  res.status(200).json({ message: "Account and user successfully removed" });
 });
 
 app.use((req, res) => {
