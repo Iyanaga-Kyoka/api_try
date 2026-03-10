@@ -109,5 +109,9 @@ app.post("/close", (req, res) => {
     .json({ message: "Account and user details successfully removed" });
 });
 
+app.use((req, res) => {
+  res.status(404).json({ message: "Not Found" });
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT);
